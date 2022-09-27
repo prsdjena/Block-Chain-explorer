@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BlockChain Explorer</title>
+    <link rel="icon" type="image/x-icon" href="img/2.png" />
+
+    <!-- bootstrap -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <!-- style -->
+    <style>
+      body {
+        padding-top: 15px;
+        background: white;
+        color: white;
+      }
+      h1 {
+        margin: 15px 0px;
+      }
+      @media (min-width: 1200px) {
+        .container {
+          max-width: 1200px;
+          padding: 10px;
+          margin-left: 100px;
+        }
+        .table {
+          padding: 0;
+          margin: 0;
+        }
+      }
+
+      html {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      }
+      canvas {
+        display: flex;
+        position: absolute;
+        vertical-align: bottom;
+        top: 0px;
+        height: 100% !important;
+      }
+
+      #particles-js {
+        height: 100%;
+        background-color: black;
+        box-sizing: border-box;
+        background-position: 50% 50%;
+        background-repeat: repeat;
+        display: flex;
+        flex: 0 0 100%;
+      }
+      .badge {
+        color: #e7e1d7;
+        background-color: #3e9b46;
+      }
+    </style>
+  </head>
+  <body id="particles-js">
+    <div class="container">
+      <div class="row">
+        <div class="text-center">
+          <img src="img/3.png" alt="logo" />
+
+          <h1>BlockChain Explorer</h1>
+          <table class="table w-auto">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Block Hash</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Web3 -->
+    <script src="js/web3.min.js"></script>
+    <script>
+      var provider =
+        "https://mainnet.infura.io/v3/111d509d60224c3b91eedd0ce4750b17"; //link here
+      var web3Provider = new Web3.providers.HttpProvider(provider);
+      var web3 = new Web3(web3Provider);
+
+      var latestBlock = web3.eth.blockNumber;
+
+      for (var i = 0; i < 9; i++) {
+        var block = web3.eth.getBlock(latestBlock - i);
+        var number = block.number;
+        var hash = block.hash;
+
+        var trans = block.transactions;
+        var val = web3.eth.getTransaction(trans[0]);
+        var amount = val.value;
+        var l = amount.toString();
+        var am = web3.fromWei(l, "ether");
+
+        var time = new Date(block.timestamp * 1000);
+        $("tbody").append(
+          "<tr><td>" +
+            number +
+            "</td><td>" +
+            hash +
+            "</td><td><span class=badge>" +
+            am +
+            " ETH</span></td><td>" +
+            time +
+            "</td></tr>"
+        );
+      }
+    </script>
+
+    <!--Desiging-->
+    <script src="js/particles.js"></script>
+    <script src="js/ap.js"></script>
+  </body>
+</html>
